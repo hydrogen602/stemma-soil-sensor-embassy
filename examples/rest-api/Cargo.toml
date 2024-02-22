@@ -5,7 +5,10 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
-stemma-soil-sensor-embassy = { path = "../.." }
+stemma-soil-sensor-embassy = { path = "../..", features = [
+  "defmt",
+  "picoserve",
+] }
 
 picoserve = { version = "0.9.1", features = ["embassy"] }
 cyw43-pio = { version = "0.1.0", features = ["defmt", "overclock"] }

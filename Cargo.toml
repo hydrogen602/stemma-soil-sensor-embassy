@@ -3,6 +3,10 @@ name = "stemma-soil-sensor-embassy"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
+description = "Interface with Adafruit's STEMMA Soil Sensor while using embassy"
+readme = "README.md"
+authors = ["Jonathan Rotter"]
+categories = ["embedded", "no-std"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -19,7 +23,7 @@ picoserve = { version = "0.9.1", features = ["embassy"], optional = true }
 
 
 [features]
-default = ["defmt", "picoserve"]
+default = []
 picoserve = ["dep:picoserve"]
 defmt = [
   "dep:defmt",
