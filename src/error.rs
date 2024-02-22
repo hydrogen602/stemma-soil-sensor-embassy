@@ -1,3 +1,5 @@
+//! Error types for the soil sensor library
+
 use embassy_rp::i2c;
 use thiserror_no_std as thiserror;
 
