@@ -6,7 +6,9 @@ license = "MIT"
 description = "Interface with Adafruit's STEMMA Soil Sensor while using embassy"
 readme = "README.md"
 authors = ["Jonathan Rotter"]
-categories = ["embedded", "no-std"]
+categories = ["embedded", "no-std", "no-std::no-alloc"]
+keywords = ["embassy", "rp2040", "stemma soil sensor", "raspberry pi pico w"]
+repository = "https://github.com/hydrogen602/stemma-soil-sensor-embassy"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -24,7 +26,11 @@ picoserve = { version = "0.9.1", features = ["embassy"], optional = true }
 
 [features]
 default = []
+
+## Implements IntoResponse for all error types to make integration with picoserve easier
 picoserve = ["dep:picoserve"]
+
+## Defmt logging support. Implements `defmt::Format` for all error types.
 defmt = [
   "dep:defmt",
   "embassy-rp/defmt",
