@@ -6,7 +6,6 @@
 #![allow(async_fn_in_trait)]
 #![feature(type_alias_impl_trait)]
 
-/// Module for errors related to the soil sensor
 pub mod error;
 mod soil_sensor;
 
