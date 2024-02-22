@@ -7,7 +7,7 @@ description = "Interface with Adafruit's STEMMA Soil Sensor while using embassy"
 readme = "README.md"
 authors = ["Jonathan Rotter"]
 categories = ["embedded", "no-std", "no-std::no-alloc"]
-keywords = ["embassy", "rp2040", "stemma soil sensor", "raspberry pi pico w"]
+keywords = ["embassy", "rp2040", "stemma-soil-sensor", "raspberry-pi-pico-w"]
 repository = "https://github.com/hydrogen602/stemma-soil-sensor-embassy"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
