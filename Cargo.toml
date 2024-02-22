@@ -1,0 +1,29 @@
+[package]
+name = "stemma-soil-sensor-embassy"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+thiserror-no-std = "2.0.2"
+embassy-rp = { version = "0.1.0", features = [
+  "time-driver",
+  "critical-section-impl",
+] }
+embassy-time = "0.3.0"
+embedded-hal-1 = { package = "embedded-hal", version = "1.0" }
+defmt = { version = "0.3", optional = true }
+picoserve = { version = "0.9.1", features = ["embassy"], optional = true }
+
+
+[features]
+default = ["defmt", "picoserve"]
+picoserve = ["dep:picoserve"]
+defmt = [
+  "dep:defmt",
+  "embassy-rp/defmt",
+  "embassy-time/defmt",
+  "embassy-time/defmt-timestamp-uptime",
+]
