@@ -1,7 +1,6 @@
 // Derived from https://github.com/adafruit/Adafruit_CircuitPython_seesaw/
 
-use embassy_rp::i2c;
-use embassy_rp::peripherals::{I2C0, PIN_4, PIN_5};
+use embassy_rp::{i2c, Peripheral};
 use embassy_time::Timer;
 use embedded_hal_1::i2c::I2c;
 
@@ -14,29 +13,33 @@ const HW_ID_DELAY: u64 = 125;
 const TEMP_C_CONSTANT: f32 = 0.00001525878;
 
 /// Represents the Stemma Soil Sensor
-pub struct SoilSensor<'i> {
-    i2c: i2c::I2c<'i, I2C0, i2c::Blocking>,
+pub struct SoilSensor<'i, I: i2c::Instance> {
+    i2c: i2c::I2c<'i, I, i2c::Blocking>,
     address: u8,
 }
 
-impl SoilSensor<'_> {
+impl<'d, I: i2c::Instance> SoilSensor<'d, I> {
     /// Create a new soil sensor with the default address of 0x36
-    pub async fn new(sda: PIN_4, scl: PIN_5, i2c: I2C0) -> SetupResult<Self> {
+    pub async fn new(
+        sda: impl Peripheral<P = impl i2c::SdaPin<I>> + 'd,
+        scl: impl Peripheral<P = impl i2c::SclPin<I>> + 'd,
+        i2c: impl Peripheral<P = I> + 'd,
+    ) -> SetupResult<Self> {
         Self::new_with_address(sda, scl, i2c, 0x36).await
     }
 
     /// Create a new soil sensor with a specific address
     pub async fn new_with_address(
-        sda: PIN_4,
-        scl: PIN_5,
-        i2c: I2C0,
+        sda: impl Peripheral<P = impl i2c::SdaPin<I>> + 'd,
+        scl: impl Peripheral<P = impl i2c::SclPin<I>> + 'd,
+        i2c: impl Peripheral<P = I> + 'd,
         address: u8,
     ) -> SetupResult<Self> {
         if address < 0x36 || address > 0x39 {
             return Err(SetupError::InvalidI2CAddress { address });
         }
 
-        let i2c: i2c::I2c<'_, I2C0, i2c::Blocking> =
+        let i2c: i2c::I2c<'_, I, i2c::Blocking> =
             i2c::I2c::new_blocking(i2c, scl, sda, i2c::Config::default());
 
         let mut sensor = SoilSensor { i2c, address };
@@ -50,7 +53,9 @@ impl SoilSensor<'_> {
             Err(SetupError::InvalidDevice { hw_id })
         }
     }
+}
 
+impl<I: i2c::Instance> SoilSensor<'_, I> {
     /// Read the temperature from the sensor, returned in Celsius.
     /// It's not high precision, maybe good to + or - 2 degrees Celsius.
     /// See the [Adafruit documentation](https://learn.adafruit.com/adafruit-stemma-soil-sensor-i2c-capacitive-moisture-sensor/overview)

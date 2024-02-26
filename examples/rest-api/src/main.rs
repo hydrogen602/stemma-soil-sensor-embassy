@@ -12,7 +12,7 @@ use embassy_executor::Spawner;
 use embassy_net::{Config, Stack, StackResources};
 use embassy_rp::bind_interrupts;
 use embassy_rp::gpio::{Level, Output};
-use embassy_rp::peripherals::{DMA_CH0, PIN_23, PIN_25, PIO0};
+use embassy_rp::peripherals::{self, DMA_CH0, PIN_23, PIN_25, PIO0};
 use embassy_rp::pio::{InterruptHandler, Pio};
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex};
 use embassy_time::{Duration, Timer};
@@ -82,7 +82,9 @@ async fn web_task(
 }
 
 #[derive(Clone, Copy)]
-struct SharedSoilSensor(&'static Mutex<CriticalSectionRawMutex, SoilSensor<'static>>);
+struct SharedSoilSensor(
+    &'static Mutex<CriticalSectionRawMutex, SoilSensor<'static, peripherals::I2C0>>,
+);
 
 struct AppState {
     shared_soil_sensor: SharedSoilSensor,
