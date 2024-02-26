@@ -1,6 +1,6 @@
 [package]
 name = "stemma-soil-sensor-embassy"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 license = "MIT"
 description = "Interface with Adafruit's STEMMA Soil Sensor while using embassy"
